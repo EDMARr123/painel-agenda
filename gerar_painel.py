@@ -259,7 +259,7 @@ function card(rca) {
 
     <div class="pedidos-row">
       <div class="box"><div class="l">Pedidos na agenda</div><div class="v">${rca.ped_agenda}</div></div>
-      <div class="box"><div class="l">Conversão</div><div class="v">${fmtPct(rca.conversao)}</div></div>
+      <div class="box"><div class="l">Conversão</div><div class="v" style="color:var(--${rca.conversao >= 0.5 ? "good" : "bad"})">${fmtPct(rca.conversao)}</div></div>
       <div class="box"><div class="l">Total pedidos</div><div class="v">${rca.total_pedidos}</div></div>
     </div>
   </article>`;
