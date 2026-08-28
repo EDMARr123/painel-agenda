@@ -247,13 +247,6 @@ function card(rca) {
       </div>
     </div>
 
-    ${rca.codigo === "EQUIPE" ? "" : `
-    <div class="horarios">
-      <div class="box"><div class="l">1º Cliente</div><div class="v">${rca.primeiro_cliente || "—"}</div></div>
-      <div class="box"><div class="l">Último</div><div class="v">${rca.ultimo_cliente || "—"}</div></div>
-      <div class="box"><div class="l">T.M.A.</div><div class="v">${rca.tma || "—"}</div></div>
-    </div>`}
-
     ${linhaMetric("Agenda cumprida", rca.visitado, rca.meta_agenda, rca.pct_agenda, [1, 0.9])}
     ${linhaMetric("Dentro da agenda", rca.dentro_agenda, rca.visitado, rca.pct_dentro_agenda)}
 
