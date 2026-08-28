@@ -195,8 +195,9 @@ function corAvatar(nome) {
   return PALETA_AVATAR[h % PALETA_AVATAR.length];
 }
 
-function linhaMetric(label, valor, meta, pct) {
-  const cor = corPct(pct, 0.9, 0.6);
+function linhaMetric(label, valor, meta, pct, thresholds) {
+  const [boa, media] = thresholds || [0.9, 0.6];
+  const cor = corPct(pct, boa, media);
   return `
     <div class="metric-row">
       <div class="top">
@@ -214,8 +215,8 @@ function card(rca) {
     ? `<div class="avatar" style="padding:0;overflow:hidden"><img src="${foto}" alt="${rca.nome}" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>`
     : `<div class="avatar" style="background:${av}">${iniciais(rca.nome)}</div>`;
 
-  const corStatus = corPct(rca.pct_agenda, 0.9, 0.6);
-  const bateu = rca.pct_agenda >= 0.9;
+  const corStatus = corPct(rca.pct_agenda, 1, 0.9);
+  const bateu = rca.pct_agenda >= 1;
 
   const textoWhats = encodeURIComponent(
     `*${rca.nome}* (RCA ${rca.codigo} · ${rca.rota})\n` +
@@ -253,7 +254,7 @@ function card(rca) {
       <div class="box"><div class="l">T.M.A.</div><div class="v">${rca.tma || "—"}</div></div>
     </div>`}
 
-    ${linhaMetric("Agenda cumprida", rca.visitado, rca.meta_agenda, rca.pct_agenda)}
+    ${linhaMetric("Agenda cumprida", rca.visitado, rca.meta_agenda, rca.pct_agenda, [1, 0.9])}
     ${linhaMetric("Dentro da agenda", rca.dentro_agenda, rca.visitado, rca.pct_dentro_agenda)}
 
     <div class="pedidos-row">
@@ -266,7 +267,7 @@ function card(rca) {
 
 function montarResumo(dados) {
   const total = dados.length;
-  const bateram = dados.filter(r => r.pct_agenda >= 0.9).length;
+  const bateram = dados.filter(r => r.pct_agenda >= 1).length;
   const mediaAgenda = dados.reduce((s, r) => s + r.pct_agenda, 0) / (total || 1);
   const supervisores = new Set(dados.map(r => r.supervisor)).size;
   document.getElementById("summary").innerHTML = `
