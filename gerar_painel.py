@@ -216,7 +216,7 @@ function card(rca) {
     : `<div class="avatar" style="background:${av}">${iniciais(rca.nome)}</div>`;
 
   const bateu = rca.pct_agenda >= 1 && rca.conversao >= 0.5;
-  const corStatus = bateu ? "good" : corPct(rca.pct_agenda, 1, 0.9);
+  const corStatus = bateu ? "good" : "bad";
 
   const textoWhats = encodeURIComponent(
     `*${rca.nome}* (RCA ${rca.codigo} · ${rca.rota})\n` +

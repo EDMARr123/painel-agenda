@@ -105,7 +105,7 @@ footer.foot { margin-top: 40px; text-align: center; font-size: 11.5px; color: va
   <header class="top">
     <div class="title-block">
       <h1>Painel Agenda</h1>
-      <p>Visitas, agenda cumprida e pedidos do dia 27 — atualizado em 28/08/2026 00:59</p>
+      <p>Visitas, agenda cumprida e pedidos do dia 27 — atualizado em 28/08/2026 01:01</p>
     </div>
     <div class="summary-strip" id="summary"></div>
   </header>
@@ -167,7 +167,7 @@ function card(rca) {
     : `<div class="avatar" style="background:${av}">${iniciais(rca.nome)}</div>`;
 
   const bateu = rca.pct_agenda >= 1 && rca.conversao >= 0.5;
-  const corStatus = bateu ? "good" : corPct(rca.pct_agenda, 1, 0.9);
+  const corStatus = bateu ? "good" : "bad";
 
   const textoWhats = encodeURIComponent(
     `*${rca.nome}* (RCA ${rca.codigo} · ${rca.rota})\n` +
