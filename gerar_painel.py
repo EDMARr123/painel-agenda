@@ -215,8 +215,8 @@ function card(rca) {
     ? `<div class="avatar" style="padding:0;overflow:hidden"><img src="${foto}" alt="${rca.nome}" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>`
     : `<div class="avatar" style="background:${av}">${iniciais(rca.nome)}</div>`;
 
-  const corStatus = corPct(rca.pct_agenda, 1, 0.9);
-  const bateu = rca.pct_agenda >= 1;
+  const bateu = rca.pct_agenda >= 1 && rca.conversao >= 0.5;
+  const corStatus = bateu ? "good" : corPct(rca.pct_agenda, 1, 0.9);
 
   const textoWhats = encodeURIComponent(
     `*${rca.nome}* (RCA ${rca.codigo} · ${rca.rota})\n` +
@@ -237,7 +237,7 @@ function card(rca) {
       <div class="head-actions">
         ${rca.codigo === "EQUIPE"
           ? ""
-          : `<span class="badge-status" style="background:var(--${corStatus}-soft);color:var(--${corStatus})">${bateu ? "BATEU !" : "NÃO BATEU !"}</span>`}
+          : `<span class="badge-status" style="background:var(--${corStatus}-soft);color:var(--${corStatus})">${bateu ? "🏆 BATEU !" : "NÃO BATEU !"}</span>`}
         <button class="icon-btn" title="Imprimir" onclick="window.print()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
         </button>
@@ -260,7 +260,7 @@ function card(rca) {
 
 function montarResumo(dados) {
   const total = dados.length;
-  const bateram = dados.filter(r => r.pct_agenda >= 1).length;
+  const bateram = dados.filter(r => r.pct_agenda >= 1 && r.conversao >= 0.5).length;
   const mediaAgenda = dados.reduce((s, r) => s + r.pct_agenda, 0) / (total || 1);
   const supervisores = new Set(dados.map(r => r.supervisor)).size;
   document.getElementById("summary").innerHTML = `
