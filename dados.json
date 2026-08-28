@@ -26,12 +26,12 @@
       "ultimo_cliente": "17:02",
       "tma": "00:07",
       "meta_agenda": 29,
-      "visitado": 28,
-      "pct_agenda": 0.9655172413793104,
+      "visitado": 29,
+      "pct_agenda": 1,
       "dentro_agenda": 20,
-      "pct_dentro_agenda": 0.7142857142857143,
-      "ped_agenda": 10,
-      "conversao": 0.35714285714285715,
+      "pct_dentro_agenda": 0.6896551724137931,
+      "ped_agenda": 15,
+      "conversao": 0.5172413793103449,
       "total_pedidos": 20
     },
     {
