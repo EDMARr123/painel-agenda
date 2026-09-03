@@ -306,6 +306,7 @@ function montarTabs(dados) {
   const tabsEl = document.getElementById("tabs");
   tabsEl.innerHTML =
     `<button class="tab active" data-sup="__todos__">Todos <span class="count">${dados.length}</span></button>` +
+    `<button class="tab" data-sup="__supervisores__">Supervisores <span class="count">${supervisores.length}</span></button>` +
     supervisores.map(s => `<button class="tab" data-sup="${s}">${s} <span class="count">${contagem(s)}</span></button>`).join("");
 
   tabsEl.addEventListener("click", (e) => {
@@ -318,29 +319,31 @@ function montarTabs(dados) {
 }
 
 function filtrar(sup) {
-  const cards = document.querySelectorAll(".card");
-  let visiveis = 0;
-  cards.forEach(c => {
-    const mostra = sup === "__todos__" || c.dataset.supervisor === sup;
-    c.style.display = mostra ? "" : "none";
-    if (mostra) visiveis++;
-  });
-  document.getElementById("empty").style.display = visiveis === 0 ? "block" : "none";
+  if (sup === "__supervisores__") {
+    const supervisores = [...new Set(DADOS.map(r => r.supervisor))].sort();
+    const cardsEquipes = supervisores
+      .map(s => agregarTime(DADOS.filter(r => r.supervisor === s), s))
+      .sort((a, b) => b.pct_agenda - a.pct_agenda);
+    document.getElementById("resumoTime").innerHTML = "";
+    document.getElementById("grid").innerHTML = cardsEquipes.map(card).join("");
+    document.getElementById("empty").style.display = cardsEquipes.length ? "none" : "block";
+    return;
+  }
 
   const filtrados = sup === "__todos__" ? DADOS : DADOS.filter(r => r.supervisor === sup);
+  document.getElementById("grid").innerHTML = filtrados
+    .slice()
+    .sort((a, b) => b.pct_agenda - a.pct_agenda || a.nome.localeCompare(b.nome))
+    .map(card)
+    .join("");
+  document.getElementById("empty").style.display = filtrados.length ? "none" : "block";
   montarResumoTime(filtrados, sup === "__todos__" ? "EQUIPE TODA" : sup);
 }
 
 function montar() {
   montarResumo(DADOS);
-  const supervisorUnico = new Set(DADOS.map(r => r.supervisor)).size === 1 ? DADOS[0].supervisor : "EQUIPE TODA";
-  montarResumoTime(DADOS, supervisorUnico);
   montarTabs(DADOS);
-  document.getElementById("grid").innerHTML = DADOS
-    .slice()
-    .sort((a, b) => b.pct_agenda - a.pct_agenda || a.nome.localeCompare(b.nome))
-    .map(card)
-    .join("");
+  filtrar("__todos__");
 }
 
 montar();
